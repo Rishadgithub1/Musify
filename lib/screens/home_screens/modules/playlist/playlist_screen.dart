@@ -6,8 +6,6 @@ import 'package:music_app/db/model/music_model.dart';
 import 'package:music_app/screens/home_screens/modules/playlist/allsongslist_playlist.dart';
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 
 class PlaylistData extends StatefulWidget {
   const PlaylistData(
@@ -48,15 +46,12 @@ class _PlaylistDataState extends State<PlaylistData> {
             ),
           ),
           automaticallyImplyLeading: false,
-          title: Text(
-            widget.playlist.name,
-            style: GoogleFonts.ubuntuCondensed(
-                textStyle: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            )),
-          ),
+          title: Text(widget.playlist.name,
+              style: const TextStyle(
+                  fontFamily: 'UbuntuCondensed',
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold)),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -102,16 +97,19 @@ class _PlaylistDataState extends State<PlaylistData> {
                                 );
                               },
                               leading: QueryArtworkWidget(
-                                artworkHeight:MediaQuery.of(context).size.height * 0.14,
-                                artworkWidth: MediaQuery.of(context).size.width * 0.14,
+                                artworkHeight:
+                                    MediaQuery.of(context).size.height * 0.14,
+                                artworkWidth:
+                                    MediaQuery.of(context).size.width * 0.14,
                                 id: playlistsong[index].id,
                                 type: ArtworkType.AUDIO,
                                 artworkBorder: BorderRadius.circular(10),
-                                    nullArtworkWidget: SizedBox(
-                                    width: MediaQuery.of(context).size.width*0.14,
-                                    child: Image.asset(
-                                        'assets/images/no song.png'),
-                                  ),
+                                nullArtworkWidget: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.14,
+                                  child:
+                                      Image.asset('assets/images/no song.png'),
+                                ),
                                 errorBuilder: (
                                   context,
                                   excepion,
@@ -121,17 +119,15 @@ class _PlaylistDataState extends State<PlaylistData> {
                                   return Image.asset('');
                                 },
                               ),
-                              title: Text(
-                                playlistsong[index].title,
-                                maxLines: 1,
-                                overflow: TextOverflow.clip,
-                                style: GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(
-                                  fontSize: 18
-                                ),)
-                              ),
+                              title: Text(playlistsong[index].title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.clip,
+                                  style:const TextStyle(fontFamily: 'UbuntuCondensed',fontSize: 18)
+                                
+                                  ),
                               subtitle: Text(
                                 playlistsong[index].artist!,
-                                style: GoogleFonts.ubuntuCondensed(),
+                                style: const TextStyle(fontFamily: 'UbuntuCondensed'),
                                 maxLines: 1,
                               ),
                               trailing: IconButton(
@@ -194,5 +190,3 @@ class _PlaylistDataState extends State<PlaylistData> {
     return plsongs;
   }
 }
-
-

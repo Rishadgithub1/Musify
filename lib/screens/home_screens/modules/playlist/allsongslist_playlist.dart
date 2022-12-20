@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_app/db/functions/playlist_db.dart';
 import 'package:music_app/db/model/music_model.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListPage extends StatefulWidget {
@@ -32,10 +31,10 @@ class _SongListPageState extends State<SongListPage> {
       child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: Text('Add Songs', style: GoogleFonts.ubuntuCondensed()),
-            centerTitle: true,
-          ),
+              backgroundColor: Colors.transparent,
+              title: const Text('Add Songs',
+                  style: TextStyle(fontFamily: 'UbuntuCondensed')),
+              centerTitle: true),
           body: SafeArea(
             child: FutureBuilder<List<SongModel>>(
                 future: audioQuery.querySongs(
@@ -50,7 +49,7 @@ class _SongListPageState extends State<SongListPage> {
                         color: Colors.white,
                       ),
                     );
-                  } 
+                  }
                   if (item.data!.isEmpty) {
                     return const Center(
                       child: Text(
@@ -85,15 +84,19 @@ class _SongListPageState extends State<SongListPage> {
                             artworkBorder: BorderRadius.circular(10),
                           ),
                           title: Text(
-                            style: GoogleFonts.alegreya(
-                                fontWeight: FontWeight.w600, fontSize: 17),
+                            style: const TextStyle(
+                                fontFamily: 'UbuntuCondensed',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 17),
                             item.data![index].title,
                             overflow: TextOverflow.clip,
                             maxLines: 1,
                           ),
                           subtitle: Text(
-                            style: GoogleFonts.alegreya(
-                                fontWeight: FontWeight.w600, fontSize: 12),
+                            style: const TextStyle(
+                                fontFamily: 'UbuntuCondensed',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
                             "${item.data![index].artist}",
                             overflow: TextOverflow.visible,
                             maxLines: 1,
@@ -132,12 +135,14 @@ class _SongListPageState extends State<SongListPage> {
     if (!widget.playlist.inValueIn(data.id)) {
       widget.playlist.add(data.id);
       const snackbar = SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-          content: Text(
-            'song Added to Playlist',
-            style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-          ));
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        content: Text(
+          'song Added to Playlist',
+          style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+        ),
+        duration: Duration(milliseconds: 750),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     }
   }

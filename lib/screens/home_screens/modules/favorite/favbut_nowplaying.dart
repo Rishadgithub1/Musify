@@ -1,8 +1,9 @@
+
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 
 class FavButMusicPlaying extends StatefulWidget {
   const FavButMusicPlaying({super.key, required this.songFavoriteMusicPlaying});
@@ -23,26 +24,26 @@ class _FavoriteButtonState extends State<FavButMusicPlaying> {
             onPressed: () {
               if (FavoriteDb.isFavor(widget.songFavoriteMusicPlaying)) {
                 FavoriteDb.delete(widget.songFavoriteMusicPlaying.id);
-                final snackBar = SnackBar(
+                const snackBar = SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.grey,
                   content: Text(
                     'Removed From Favorite',
-                    style:GoogleFonts.ubuntuCondensed()
+                    style: TextStyle(fontFamily: 'UbuntuCondensed'),
                   ),
-                  duration:const Duration(milliseconds: 1500),
+                  duration:Duration(milliseconds: 1500),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else {
                 FavoriteDb.add(widget.songFavoriteMusicPlaying);
-                 final snackbar = SnackBar(
+                 const snackbar = SnackBar(
                   behavior: SnackBarBehavior.floating,
                   backgroundColor: Colors.white,
                   content: Text(
                     'Song Added to Favorite',
-                    style:GoogleFonts.ubuntuCondensed()
+                    style:TextStyle(fontFamily: 'UbuntuCondensed')
                   ),
-                  duration:const Duration(milliseconds: 350),
+                  duration: Duration(milliseconds: 350),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackbar);
               }

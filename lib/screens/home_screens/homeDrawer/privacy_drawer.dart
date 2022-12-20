@@ -1,7 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class PrivacyDrawer extends StatelessWidget {
   const PrivacyDrawer({super.key});
@@ -25,16 +22,15 @@ class PrivacyDrawer extends StatelessWidget {
           padding: const EdgeInsets.only(top: 25, left: 18),
           child: ListView(
             children: [
-              Text(
+              const Text(
                 "Privacy Policy for Musify",
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle: const TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontFamily: 'UbuntuCondensed',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.07,
-              ),
-              Text(
+              SizedBox(height: MediaQuery.of(context).size.height * 0.07),
+              const Text(
                 """
 Privacy Policy
 
@@ -97,8 +93,7 @@ Contact Us
 
 If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at rishadedassery987@gmail.com.
 """,
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle: const TextStyle(fontSize: 18)),
+                style: TextStyle(fontFamily: 'UbuntuCondensed',fontSize: 18)
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.05,

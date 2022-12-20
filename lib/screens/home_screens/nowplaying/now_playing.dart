@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/modules/all_songs/playlistFromAllSong.dart';
@@ -39,19 +37,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
     playSong();
   }
 
-  void playSong() {
-    GetSongs.player.durationStream.listen((d) {
-      setState(() {
-        _duration = d!;
-      });
-    });
-    GetSongs.player.positionStream.listen((p) {
-      setState(() {
-        _position = p;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -60,7 +45,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
         return true;
       },
       child: Container(
-        // width: double.infinity,
+        width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
@@ -76,6 +62,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
           ),
         ),
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: SafeArea(
             child: Column(
@@ -117,8 +104,10 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         QueryArtworkWidget(
-                          artworkHeight: MediaQuery.of(context).size.height * 0.28,
-                          artworkWidth:MediaQuery.of(context).size.width * 0.65,
+                          artworkHeight:
+                              MediaQuery.of(context).size.height * 0.28,
+                          artworkWidth:
+                              MediaQuery.of(context).size.width * 0.65,
                           artworkFit: BoxFit.cover,
                           artworkQuality: FilterQuality.high,
                           id: widget.songModelList[currentIndex].id,
@@ -139,8 +128,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                             maxLines: 1,
                             widget.songModelList[currentIndex].title,
                             overflow: TextOverflow.clip,
-                            style: GoogleFonts.ubuntuCondensed(
-                                textStyle: const TextStyle(color: Colors.white),
+                            style: const TextStyle(
+                                fontFamily: 'UbuntuCondensed',
                                 fontWeight: FontWeight.w600,
                                 fontSize: 21),
                           ),
@@ -228,9 +217,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                                     inactiveColor: Colors.white,
                                     thumbColor:
                                         const Color.fromARGB(255, 10, 139, 245),
-                                    min: const Duration(microseconds: 0)
-                                        .inSeconds
-                                        .toDouble(),
+                                    min: const Duration(microseconds: 0).inSeconds.toDouble(),
                                     value: _position.inSeconds.toDouble(),
                                     max: _duration.inSeconds.toDouble(),
                                     onChanged: (value) {
@@ -245,9 +232,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.013,
-                        ),
+                        SizedBox( height: MediaQuery.of(context).size.height * 0.013),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -317,6 +302,19 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
         ),
       ),
     );
+  }
+
+  void playSong() {
+    GetSongs.player.durationStream.listen((d) {
+      setState(() {
+        _duration = d!;
+      });
+    });
+    GetSongs.player.positionStream.listen((p) {
+      setState(() {
+        _position = p;
+      });
+    });
   }
 
   void sliderFunction(int seconds) {

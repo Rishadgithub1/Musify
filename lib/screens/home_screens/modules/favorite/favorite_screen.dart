@@ -3,8 +3,6 @@ import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 
 class FavoriteScreen extends StatelessWidget {
   const FavoriteScreen({super.key});
@@ -36,12 +34,12 @@ class FavoriteScreen extends StatelessWidget {
                     Icons.arrow_back,
                     color: Colors.white,
                   )),
-              title: Text(
+              title: const Text(
                 'Favorite',
-                style: GoogleFonts.ubuntuCondensed(
-                  textStyle: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+                style: TextStyle(
+                    fontFamily: 'UbuntuCondensed',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
               centerTitle: true,
               backgroundColor: Colors.transparent,
@@ -52,20 +50,25 @@ class FavoriteScreen extends StatelessWidget {
               builder: (BuildContext ctx, List<SongModel> favoriteData,
                   Widget? child) {
                 if (favoriteData.isEmpty) {
-                  return Center(
+                  return const Center(
                     child: Text('No Favorite Songs',
-                        style: GoogleFonts.ubuntuCondensed(
-                            textStyle: const TextStyle(
-                                // color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16))),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'UbuntuCondensed',
+                            fontSize: 16)
+                        //  GoogleFonts.ubuntuCondensed(
+                        //     textStyle: const TextStyle(
+                        //         // color: Colors.red,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 16))
+                        ),
                   );
                 } else {
                   return ListView.separated(
                       padding: const EdgeInsets.all(15),
                       itemBuilder: ((ctx, index) {
                         return ListTile(
-                          tileColor:const Color.fromARGB(255, 45, 7, 72),
+                          tileColor: const Color.fromARGB(255, 45, 7, 72),
                           leading: QueryArtworkWidget(
                               id: favoriteData[index].id,
                               type: ArtworkType.AUDIO,
@@ -75,17 +78,16 @@ class FavoriteScreen extends StatelessWidget {
                               )),
                           title: Text(favoriteData[index].title,
                               maxLines: 1,
-                              style: GoogleFonts.ubuntuCondensed(
-                                  textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.clip,
-                              ))),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.clip)),
                           subtitle: Text(
-                            style: GoogleFonts.ubuntuCondensed(
-                                textStyle: const TextStyle(
-                              color: Colors.grey,
-                              overflow: TextOverflow.clip,
-                            )),
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontFamily: 'UbuntuCondensed',
+                                overflow: TextOverflow.clip)
+                         
+                            ,
                             maxLines: 1,
                             favoriteData[index].artist.toString() == '<unknown>'
                                 ? 'UNKNOWN ARTIST'

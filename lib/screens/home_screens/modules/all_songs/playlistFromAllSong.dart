@@ -4,15 +4,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/playlist_db.dart';
 import 'package:music_app/db/model/music_model.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class PlayListScreenAllSongs extends StatefulWidget {
   const PlayListScreenAllSongs({Key? key, this.findex}) : super(key: key);
 
 // ignore: prefer_typing_uninitialized_variables
-final findex;
+  final findex;
   @override
   State<PlayListScreenAllSongs> createState() => _PlayListScreenAllSongsState();
 }
@@ -42,11 +40,11 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              title: Text( 'PlayList',
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-              ),
+              title: const Text('PlayList',
+                  style: TextStyle(
+                      fontFamily: 'UbuntuCondensed',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
               centerTitle: true,
             ),
             backgroundColor: Colors.transparent,
@@ -54,14 +52,13 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Hive.box<MusicModel>('playlistDB').isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Text('No PlayList',
-                            style: GoogleFonts.ubuntuCondensed(
-                              textStyle: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            )),
+                            style: TextStyle(
+                                fontFamily: 'UbuntuCondensed',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70)),
                       )
                     : GridView.builder(
                         gridDelegate:
@@ -81,48 +78,62 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
                                   Box<MusicModel> musicList, Widget? child) {
                                 return GestureDetector(
                                   onTap: () {
-                                    playlistCheck(GetSongs.songscopy[widget.findex],datas); 
-                                    PlayListDB().playlistnotifier.notifyListeners();
+                                    playlistCheck(
+                                        GetSongs.songscopy[widget.findex],
+                                        datas);
+                                    PlayListDB()
+                                        .playlistnotifier
+                                        .notifyListeners();
                                     Navigator.of(context).pop();
                                   },
                                   child: Padding(
-                                      padding: const EdgeInsets.all(5), 
+                                      padding: const EdgeInsets.all(5),
                                       child: Card(
                                           shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           color: Colors.transparent,
                                           elevation: 3,
                                           child: Column(
-                                            crossAxisAlignment:CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Container(
-                                                width: MediaQuery.of(context).size.width*0.35,
+                                                  width: MediaQuery.of(context).size.width * 0.35,
                                                   padding:const EdgeInsets.only(top: 8),
-                                                  child: Image.asset('assets/images/no song.png')),
+                                                  child: Image.asset(
+                                                      'assets/images/no song.png')),
                                               Padding(
                                                   padding:
-                                                      const EdgeInsets.only(left: 5, right: 8),
+                                                      const EdgeInsets.only(
+                                                          left: 5, right: 8),
                                                   child: Row(
                                                     children: [
                                                       Expanded(
                                                         flex: 4,
                                                         child:
                                                             SingleChildScrollView(
-                                                          scrollDirection:Axis.horizontal,
+                                                          scrollDirection:
+                                                              Axis.horizontal,
                                                           child: Column(
                                                             crossAxisAlignment:
-                                                                CrossAxisAlignment.start,
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Text(datas.name,
-                                                                  style:GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(
-                                                                      color: Colors.white,fontWeight:FontWeight.bold)),
-                                                                  overflow:TextOverflow.ellipsis)
+                                                                  style:const TextStyle(
+                                                                      fontFamily:
+                                                                          'UbuntuCondensed',
+                                                                      fontWeight:FontWeight.bold,
+                                                                      color: Colors.white),
+                                                                  overflow:
+                                                                      TextOverflow.ellipsis)
                                                             ],
                                                           ),
                                                         ),
                                                       ),
-                                                     
                                                     ],
                                                   ))
                                             ],
@@ -134,8 +145,9 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
               ),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              label:Text('New playlist',
-              style:GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(fontSize: 18)),),
+              label:const Text(
+                'New playlist',
+                style:TextStyle(fontFamily: 'UbuntuCondensed',fontSize: 18)),
               splashColor: Colors.transparent,
               onPressed: () {
                 showDialog(
@@ -148,29 +160,25 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
                         ),
                       ),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height*0.3,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               Text(
-                                 'Create New Playlist',
-                                 style: GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(
-                                     fontSize: 25, fontWeight: FontWeight.bold))
-                               ),
-                              const SizedBox(
-                                height: 30,
-                              ),
+                              const Text('Create New Playlist',
+                              style: TextStyle(fontFamily: 'UbuntuCondensed',
+                              fontSize: 25,fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 30 ),
                               Form(
                                 key: _formKey,
                                 child: TextFormField(
                                     controller: nameController,
-                                    decoration: InputDecoration(
+                                    decoration:const InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'New Playlist',
-                                        hintStyle: GoogleFonts.ubuntuCondensed()),
+                                        hintStyle:TextStyle(fontFamily: 'UbuntuCondensed')),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Please enter playlist name";
@@ -192,29 +200,24 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text(
-                                        'Cancel',
-                                        style: GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(
-                                          color: Colors.white,
-                                        ),)
-                                      ),
+                                      child:const Text('Cancel',
+                                          style: TextStyle(fontFamily: 'UbuntuCondensed') ),
                                     ),
                                   ),
                                   SizedBox(
                                     width: 100,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor:Colors.white
-                                      ),
+                                          backgroundColor: Colors.white),
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           whenButtonClicked();
                                           Navigator.pop(context);
                                         }
                                       },
-                                      child: Text(
+                                      child:const Text(
                                         'Save',
-                                        style:GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(color: Colors.black)),
+                                        style: TextStyle(fontFamily: 'UbuntuCondensed',color: Colors.black)
                                       ),
                                     ),
                                   ),
@@ -253,21 +256,20 @@ class _PlayListScreenAllSongsState extends State<PlayListScreenAllSongs> {
     }
   }
 
-
-   void playlistCheck(SongModel data,datas) {
+  void playlistCheck(SongModel data, datas) {
     if (!datas.inValueIn(data.id)) {
       datas.add(data.id);
       const snackbar = SnackBar(
-        behavior: SnackBarBehavior.floating,
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Color.fromARGB(255, 255, 255, 255),
           content: Text(
             'song Added to Playlist',
             style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
           ));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    }else{
-       const snackbarscnd = SnackBar(
-        behavior: SnackBarBehavior.floating,
+    } else {
+      const snackbarscnd = SnackBar(
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Color.fromARGB(255, 99, 96, 96),
           content: Text(
             'Song Already Added to Playlist',

@@ -1,12 +1,9 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:flutter/material.dart';
 import 'package:music_app/db/functions/recent_db.dart';
 import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class RecentlyPlayedScreen extends StatefulWidget {
   const RecentlyPlayedScreen({super.key});
@@ -50,13 +47,11 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
-            'Recent Songs',
-            style: GoogleFonts.ubuntuCondensed(
-                textStyle:
-                    const TextStyle(color: Color.fromARGB(255, 248, 245, 245)),
-                fontWeight: FontWeight.bold),
-          ),
+          title: const Text('Recent Songs',
+              style: TextStyle(
+                  fontFamily: 'UbuntuCondensed',
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 248, 245, 245))),
           backgroundColor: Colors.transparent,
           // elevation: 0,
         ),
@@ -73,13 +68,15 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                       builder: (BuildContext context, List<SongModel> value,
                           Widget? child) {
                         if (value.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 100),
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 100),
                             child: Center(
                               child: Text(
                                 'No Song In Recents',
-                                style:GoogleFonts.ubuntuCondensed(textStyle:const TextStyle(
-                                    color: Colors.white, fontSize: 25),)
+                                style: TextStyle(
+                                    fontFamily: 'UbuntuCondensed',
+                                    fontSize: 25,
+                                    color: Colors.white),
                               ),
                             ),
                           );
@@ -135,21 +132,18 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                                       ),
                                     ),
                                     title: Text(
-                                      recentSong[index].displayNameWOExt,
-                                      maxLines: 1,
-                                      style: GoogleFonts.ubuntuCondensed(
-                                          textStyle: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 248, 245, 245)),
-                                          fontSize: 18),
-                                    ),
+                                        recentSong[index].displayNameWOExt,
+                                        maxLines: 1,
+                                        style: const TextStyle(
+                                            fontFamily: 'UbuntuCondensed',
+                                            color: Colors.white,
+                                            fontSize: 18)),
                                     subtitle: Text(
                                       '${recentSong[index].artist == "<unknown>" ? "Unknown Artist" : recentSong[index].artist}',
                                       maxLines: 1,
-                                      style: GoogleFonts.ubuntuCondensed(
-                                          textStyle: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 248, 245, 245)),
+                                      style: const TextStyle(
+                                          fontFamily: 'UbuntuCondensed',
+                                          color: Colors.white,
                                           fontSize: 11),
                                     ),
                                     onTap: () {
@@ -162,7 +156,8 @@ class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   NowPlayingScreen(
-                                                      songModelList: GetSongs.playingSongs)));
+                                                      songModelList: GetSongs
+                                                          .playingSongs)));
                                     },
                                   );
                                 },

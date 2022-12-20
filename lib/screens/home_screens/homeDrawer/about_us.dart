@@ -1,8 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 class AboutUsDrawer extends StatelessWidget {
   const AboutUsDrawer({super.key});
 
@@ -31,7 +27,7 @@ class AboutUsDrawer extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.2,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.09),
-              Text(
+              const Text(
                 """
 Welcome to Musify Endless Music, 
 
@@ -42,8 +38,7 @@ We're working to turn our passion for music into a booming Music Player. We hope
 Sincerely,
 
 Rishad E""",
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle:const TextStyle(fontSize: 18)),
+                style: TextStyle(fontFamily: 'UbuntuCondensed', fontSize: 18),
               )
             ],
           ),

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
-import 'package:music_app/screens/home_screens/modules/all_songs/all_songs.dart';
+// ignore_for_file: use_build_context_synchronously
 
+import 'package:flutter/material.dart';
+import 'package:music_app/screens/home_screens/modules/all_songs/all_songs.dart';
+import 'package:music_app/screens/widgets/bottom_nav.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,11 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
     goallsongs();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-           decoration: const BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               // ignore: avoid_unnecessary_containers
               Container(
-                padding:const EdgeInsets.only(left:30),
+                padding: const EdgeInsets.only(left: 30),
                 // color: Colors.green,
                 child: Image.asset(
                   'assets/images/music-removed.png',
@@ -45,9 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Text('Listen the Soul... ♪',
-                  style: GoogleFonts.caveat(
-                      textStyle: const TextStyle(fontSize: 25),
+              const Text('Listen the Soul... ♪',
+                  style: TextStyle(
+                      fontFamily: 'UbuntuCondensed',
+                      fontSize: 20,
                       color: Colors.white)),
             ],
           ),
@@ -56,9 +58,11 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-Future<void> goallsongs() async{
-  await Future.delayed(const Duration(seconds: 3),);
-  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) =>const AllSogs()));
-}
-
+  Future<void> goallsongs() async {
+    await Future.delayed(
+      const Duration(seconds: 3),
+    );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) =>const BottomNav()));
+  }
 }

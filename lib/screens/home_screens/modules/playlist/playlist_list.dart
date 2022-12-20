@@ -5,8 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_app/db/functions/playlist_db.dart';
 import 'package:music_app/db/model/music_model.dart';
 import 'package:music_app/screens/home_screens/modules/playlist/playlist_screen.dart';
-// ignore: depend_on_referenced_packages
-import 'package:google_fonts/google_fonts.dart';
 
 class PlayListScreen extends StatefulWidget {
   const PlayListScreen({Key? key}) : super(key: key);
@@ -40,12 +38,15 @@ class _PlayListScreenState extends State<PlayListScreen> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.transparent,
-              title: Text(
-                'PlayList',
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
-              ),
+              title: const Text('PlayList',
+                  style: TextStyle(
+                      fontFamily: 'UbuntuCondensed',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)
+                  // GoogleFonts.ubuntuCondensed(
+                  //     textStyle: const TextStyle(
+                  //         color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
               centerTitle: true,
             ),
             backgroundColor: Colors.transparent,
@@ -53,14 +54,20 @@ class _PlayListScreenState extends State<PlayListScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Hive.box<MusicModel>('playlistDB').isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Text('No PlayList',
-                            style: GoogleFonts.ubuntuCondensed(
-                              textStyle: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            )),
+                            style: TextStyle(
+                                fontFamily: 'UbuntuCondensed',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70)
+                            //  GoogleFonts.ubuntuCondensed(
+                            //   textStyle: const TextStyle(
+                            //       color: Colors.white70,
+                            //       fontSize: 20,
+                            //       fontWeight: FontWeight.bold),
+                            // )
+                            ),
                       )
                     : GridView.builder(
                         gridDelegate:
@@ -126,12 +133,14 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                                                     .start,
                                                             children: [
                                                               Text(data.name,
-                                                                  style: GoogleFonts.ubuntuCondensed(
-                                                                      textStyle: const TextStyle(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontWeight: FontWeight
-                                                                              .bold)),
+                                                                  style: const TextStyle(
+                                                                      fontFamily:
+                                                                          'UbuntuCondensed',
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis)
@@ -164,30 +173,34 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                                                               43,
                                                                               9,
                                                                               53),
-                                                                      title: Text(
+                                                                      title: const Text(
                                                                           'Delete Playlist',
-                                                                          style:
-                                                                              GoogleFonts.ubuntuCondensed(textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22)),
+                                                                          style: TextStyle(
+                                                                              fontFamily: 'UbuntuCondensed',
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 22),
                                                                           textAlign: TextAlign.center),
-                                                                      content:
-                                                                          Text(
-                                                                        'Are Yout Sure You Want To Delete This Playlist',
-                                                                        style: GoogleFonts
-                                                                            .ubuntuCondensed(),
-                                                                      ),
+                                                                      content: const Text(
+                                                                          'Are Yout Sure You Want To Delete This Playlist',
+                                                                          style:
+                                                                              TextStyle(fontFamily: 'UbuntuCondensed')),
                                                                       actions: [
                                                                         TextButton(
                                                                             child:
-                                                                                Text('No', style: GoogleFonts.ubuntuCondensed(textStyle: const TextStyle(fontSize: 18))),
-                                                                            onPressed: () {
+                                                                                const Text(
+                                                                              'No',
+                                                                              style: TextStyle(fontFamily: 'UbuntuCondensed', fontSize: 18),
+                                                                            ),
+                                                                            onPressed:
+                                                                                () {
                                                                               Navigator.pop(context);
                                                                             }),
                                                                         TextButton(
                                                                           child:
-                                                                              Text(
+                                                                              const Text(
                                                                             'Yes',
                                                                             style:
-                                                                                GoogleFonts.ubuntuCondensed(textStyle: const TextStyle(fontSize: 18)),
+                                                                                TextStyle(fontFamily: 'UbuntuCondensed', fontSize: 18),
                                                                           ),
                                                                           onPressed:
                                                                               () {
@@ -211,10 +224,9 @@ class _PlayListScreenState extends State<PlayListScreen> {
               ),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              label: Text(
+              label: const Text(
                 'New playlist',
-                style: GoogleFonts.ubuntuCondensed(
-                    textStyle: const TextStyle(fontSize: 18)),
+                style: TextStyle(fontFamily: 'UbuntuCondensed'),
               ),
               splashColor: Colors.transparent,
               onPressed: () {
@@ -233,21 +245,21 @@ class _PlayListScreenState extends State<PlayListScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Create New Playlist',
-                                  style: GoogleFonts.ubuntuCondensed(
-                                      textStyle: const TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold))),
+                              const Text('Create New Playlist',
+                                  style: TextStyle(
+                                      fontFamily: 'UbuntuCondensed',
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
                               const SizedBox(height: 30),
                               Form(
                                 key: _formKey,
                                 child: TextFormField(
                                     controller: nameController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'New Playlist',
-                                        hintStyle:
-                                            GoogleFonts.ubuntuCondensed()),
+                                        hintStyle: TextStyle(
+                                            fontFamily: 'UbuntuCondensed')),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Please enter playlist name";
@@ -267,10 +279,9 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('Cancel',
-                                            style: GoogleFonts.ubuntuCondensed(
-                                                textStyle: const TextStyle(
-                                                    color: Colors.white))),
+                                        child: const Text('Cancel',
+                                            style: TextStyle(
+                                                fontFamily: 'UbuntuCondensed')),
                                       )),
                                   SizedBox(
                                     width: 100,
@@ -283,11 +294,11 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                           Navigator.pop(context);
                                         }
                                       },
-                                      child: Text(
+                                      child: const Text(
                                         'Save',
-                                        style: GoogleFonts.ubuntuCondensed(
-                                            textStyle: const TextStyle(
-                                                color: Colors.black)),
+                                        style: TextStyle(
+                                            fontFamily: 'UbuntuCondensed',
+                                            color: Colors.black),
                                       ),
                                     ),
                                   ),
@@ -315,24 +326,23 @@ class _PlayListScreenState extends State<PlayListScreen> {
   Future<void> whenSaveButtonClicked() async {
     final name = nameController.text.trim();
     final music = MusicModel(name: name, songId: []);
-
-    final data =
-        PlayListDB.playListDb.values.map((e) => e.name.trim()).toList();
+    final data = PlayListDB.playListDb.values.map((e) => e.name.trim()).toList();
 
     if (name.isEmpty) {
       return;
     } else if (data.contains(music.name)) {
-      final snackBar3 = SnackBar(
+      const snackBar3 = SnackBar(
         behavior: SnackBarBehavior.floating,
-        content: Text('Playlist Already Exist',style: GoogleFonts.ubuntuCondensed()),
-        duration:const Duration(milliseconds: 850),
+        content: Text('Playlist Already Exist',
+            style: TextStyle(fontFamily: 'UbuntuCondensed')),
+        duration: Duration(milliseconds: 850),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar3);
       nameController.clear();
     } else {
       PlayListDB().playlistAdd(music);
       nameController.clear();
-      log('playlist created');
+      // log('playlist created');
     }
   }
 }
