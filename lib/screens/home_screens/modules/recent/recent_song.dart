@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:music_app/controller/provider/recentsong_provider.dart';
 import 'package:music_app/db/functions/recent_db.dart';
 import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
 class RecentlyPlayedScreen extends StatefulWidget {
   const RecentlyPlayedScreen({super.key});
@@ -15,20 +17,11 @@ class RecentlyPlayedScreen extends StatefulWidget {
 class _RecentlyPlayedScreenState extends State<RecentlyPlayedScreen> {
   final OnAudioQuery _audioQuery = OnAudioQuery();
   static List<SongModel> recentSong = [];
-  @override
-  void initState() {
-    super.initState();
-    getAllRecent();
-    setState(() {});
-  }
-
-  Future getAllRecent() async {
-    await GetRecentSong.getRecentSongs();
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<RecentSongProvider>(context, listen: false).getAllRecent();
+
     FavoriteDb.favoriteSongs;
     return Container(
       height: double.infinity,

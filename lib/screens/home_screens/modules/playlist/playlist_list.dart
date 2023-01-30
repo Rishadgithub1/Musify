@@ -1,24 +1,19 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:music_app/db/functions/playlist_db.dart';
+import 'package:music_app/controller/provider/playlist/playlist_list_provider.dart';
 import 'package:music_app/db/model/music_model.dart';
 import 'package:music_app/screens/home_screens/modules/playlist/playlist_screen.dart';
+import 'package:provider/provider.dart';
 
-class PlayListScreen extends StatefulWidget {
-  const PlayListScreen({Key? key}) : super(key: key);
+class PlayListScreen extends StatelessWidget {
+  PlayListScreen({Key? key}) : super(key: key);
 
-  @override
-  State<PlayListScreen> createState() => _PlayListScreenState();
-}
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-final nameController = TextEditingController();
-final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-class _PlayListScreenState extends State<PlayListScreen> {
   @override
   Widget build(BuildContext context) {
+    final providerWOL = Provider.of<PlaylistListProvider>(context,listen: false);
     FocusManager.instance.primaryFocus?.unfocus();
     return Container(
       decoration: const BoxDecoration(
@@ -42,11 +37,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                   style: TextStyle(
                       fontFamily: 'UbuntuCondensed',
                       color: Colors.white,
-                      fontWeight: FontWeight.bold)
-                  // GoogleFonts.ubuntuCondensed(
-                  //     textStyle: const TextStyle(
-                  //         color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
+                      fontWeight: FontWeight.bold)),
               centerTitle: true,
             ),
             backgroundColor: Colors.transparent,
@@ -60,14 +51,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                 fontFamily: 'UbuntuCondensed',
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white70)
-                            //  GoogleFonts.ubuntuCondensed(
-                            //   textStyle: const TextStyle(
-                            //       color: Colors.white70,
-                            //       fontSize: 20,
-                            //       fontWeight: FontWeight.bold),
-                            // )
-                            ),
+                                color: Colors.white70)),
                       )
                     : GridView.builder(
                         gridDelegate:
@@ -254,7 +238,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                               Form(
                                 key: _formKey,
                                 child: TextFormField(
-                                    controller: nameController,
+                                    controller: providerWOL.nameController,
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'New Playlist',
@@ -290,7 +274,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                                           backgroundColor: Colors.white),
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
-                                          whenSaveButtonClicked();
+                                         providerWOL.whenSaveButtonClicked(context);
                                           Navigator.pop(context);
                                         }
                                       },
@@ -321,28 +305,5 @@ class _PlayListScreenState extends State<PlayListScreen> {
         },
       ),
     );
-  }
-
-  Future<void> whenSaveButtonClicked() async {
-    final name = nameController.text.trim();
-    final music = MusicModel(name: name, songId: []);
-    final data = PlayListDB.playListDb.values.map((e) => e.name.trim()).toList();
-
-    if (name.isEmpty) {
-      return;
-    } else if (data.contains(music.name)) {
-      const snackBar3 = SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: Text('Playlist Already Exist',
-            style: TextStyle(fontFamily: 'UbuntuCondensed')),
-        duration: Duration(milliseconds: 850),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar3);
-      nameController.clear();
-    } else {
-      PlayListDB().playlistAdd(music);
-      nameController.clear();
-      // log('playlist created');
-    }
   }
 }

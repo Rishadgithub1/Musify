@@ -20,7 +20,7 @@ class GetSongs {
             id: song.id.toString(),
             title: song.title,
             album: song.album,
-            artist: song.artist,
+            artist: song.artist
           ),
         ),
       );

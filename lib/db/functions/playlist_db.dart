@@ -7,6 +7,8 @@ import 'package:music_app/screens/spash_screen/splash_screen.dart';
 class PlayListDB {
   ValueNotifier<List<MusicModel>> playlistnotifier = ValueNotifier([]);
 static  final playListDb = Hive.box<MusicModel>('playlistDB'); 
+
+
   Future<void> playlistAdd(MusicModel value) async {
     final playListDb = Hive.box<MusicModel>('playlistDB');
     await playListDb.add(value);

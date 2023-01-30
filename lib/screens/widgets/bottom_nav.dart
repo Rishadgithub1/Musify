@@ -1,32 +1,29 @@
+// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
+import 'package:music_app/controller/provider/bottomnav_provider.dart';
 import 'package:music_app/controller/songController.dart';
-import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/modules/all_songs/all_songs.dart';
 import 'package:music_app/screens/home_screens/modules/favorite/favorite_screen.dart';
 import 'package:music_app/screens/home_screens/modules/playlist/playlist_list.dart';
 import 'package:music_app/screens/home_screens/modules/recent/recent_song.dart';
 import 'package:music_app/screens/widgets/miniplayer.dart';
-import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class BottomNav extends StatefulWidget {
-  const BottomNav({super.key});
+class BottomNav extends StatelessWidget {
+   BottomNav({super.key});
 
-  @override
-  State<BottomNav> createState() => _BottomNavState();
-}
-
-class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
 
   List pages = [
-    const AllSogs(),
+     AllSogs(),
     const RecentlyPlayedScreen(),
     const FavoriteScreen(),
-    const PlayListScreen(),
+     PlayListScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<BottomNavigationProvider>(context);
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -43,10 +40,8 @@ class _BottomNavState extends State<BottomNav> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: pages[currentIndex],
-        bottomNavigationBar: ValueListenableBuilder(
-          valueListenable: FavoriteDb.favoriteSongs,
-          builder:
-              (BuildContext context, List<SongModel> music, Widget? child) {
+        bottomNavigationBar: Consumer<BottomNavigationProvider>(
+          builder: (contex, value, child) {
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -92,10 +87,8 @@ class _BottomNavState extends State<BottomNav> {
                           type: BottomNavigationBarType.fixed,
                           currentIndex: currentIndex,
                           onTap: (index) {
-                            setState(() {
-                              currentIndex = index;
-                              FavoriteDb.favoriteSongs.notifyListeners();
-                            });
+                            currentIndex = index;
+                            provider.currentIndex = index;
                           },
                         ),
                       ),

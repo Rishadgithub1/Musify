@@ -1,6 +1,4 @@
 
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:on_audio_query/on_audio_query.dart';

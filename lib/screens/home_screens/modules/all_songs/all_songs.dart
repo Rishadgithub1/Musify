@@ -1,7 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_app/controller/provider/allsongs/allsongs_provider.dart';
 import 'package:music_app/controller/songController.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/db/functions/recent_db.dart';
@@ -11,34 +13,11 @@ import 'package:music_app/screens/home_screens/modules/favorite/favBut_allsongs.
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:music_app/screens/home_screens/search_screen/search_bar.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 List<SongModel> startSong = [];
-
-class AllSogs extends StatefulWidget {
-  const AllSogs({super.key});
-
-  @override
-  State<AllSogs> createState() => _AllSogsState();
-}
-
-class _AllSogsState extends State<AllSogs> {
-  @override
-  void initState() {
-    requestpermission();
-    super.initState();
-  }
-
-  void requestpermission() async {
-    if (!kIsWeb) {
-      bool permissionStatus = await _audioQuery.permissionsStatus();
-      if (!permissionStatus) {
-        await _audioQuery.permissionsRequest();
-      }
-      setState(() {});
-    }
-    Permission.storage.request;
-  }
+class AllSogs extends StatelessWidget {
+   AllSogs({super.key});
 
   playSong(String? uri) {
     try {
@@ -51,11 +30,14 @@ class _AllSogsState extends State<AllSogs> {
 
   final _audioQuery = OnAudioQuery();
   final _audioPlayer = AudioPlayer();
-
   List<SongModel> allsongs = [];
 
   @override
   Widget build(BuildContext context) {
+    log("fist time");
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<AllsongsProvider>(context, listen: false).requestpermission();
+    });
     return Scaffold(
       endDrawer: const HomeDrawer(),
       resizeToAvoidBottomInset: false,

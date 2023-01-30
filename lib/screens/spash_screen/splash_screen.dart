@@ -1,7 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:music_app/screens/home_screens/modules/all_songs/all_songs.dart';
 import 'package:music_app/screens/widgets/bottom_nav.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -36,10 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // ignore: avoid_unnecessary_containers
               Container(
                 padding: const EdgeInsets.only(left: 30),
-                // color: Colors.green,
                 child: Image.asset(
                   'assets/images/music-removed.png',
                   height: 200,
@@ -63,6 +59,6 @@ class _SplashScreenState extends State<SplashScreen> {
       const Duration(seconds: 3),
     );
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) =>const BottomNav()));
+        MaterialPageRoute(builder: (context) => BottomNav()));
   }
 }

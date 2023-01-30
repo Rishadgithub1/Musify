@@ -1,49 +1,31 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_app/controller/provider/nowplayings_provider.dart';
 import 'package:music_app/controller/songController.dart';
-import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:music_app/screens/home_screens/modules/all_songs/playlistFromAllSong.dart';
 import 'package:music_app/screens/home_screens/modules/favorite/favbut_nowplaying.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class NowPlayingScreen extends StatefulWidget {
-  const NowPlayingScreen({
+class NowPlayingScreen extends StatelessWidget {
+   NowPlayingScreen({
     super.key,
     required this.songModelList,
   });
 
   final List<SongModel> songModelList;
-  @override
-  State<NowPlayingScreen> createState() => _NowPlayingScreenState();
-}
-
-class _NowPlayingScreenState extends State<NowPlayingScreen> {
-  Duration _duration = const Duration();
-  Duration _position = const Duration();
-
   int currentIndex = 0;
-
-  @override
-  void initState() {
-    GetSongs.player.currentIndexStream.listen((index) {
-      if (index != null && mounted) {
-        setState(() {
-          currentIndex = index;
-        });
-        GetSongs.currentIndes = index;
-      }
-    });
-    super.initState();
-    playSong();
-  }
-
   @override
   Widget build(BuildContext context) {
+    
+    Provider.of<NowPlayingScreenProvider>(context, listen: false).initStateFunction();
+    Provider.of<NowPlayingScreenProvider>(context, listen: false).playSongFun();
+    final providerWL = Provider.of<NowPlayingScreenProvider>(context);
+    final providerWOL = Provider.of<NowPlayingScreenProvider>(context, listen: false);
     return WillPopScope(
-      onWillPop: () async {
-        FavoriteDb.favoriteSongs.notifyListeners();
-        return true;
-      },
+      onWillPop: Provider.of<NowPlayingScreenProvider>(context).willPoPFun,
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -82,8 +64,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                           child: IconButton(
                               padding: const EdgeInsets.only(left: 5),
                               onPressed: () {
-                                Navigator.of(context).pop();
-                                FavoriteDb.favoriteSongs.notifyListeners();
+                                providerWOL.backBtnTop(context);
                               },
                               icon: const Icon(
                                 Icons.arrow_back_ios,
@@ -103,22 +84,25 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        QueryArtworkWidget(
-                          artworkHeight:
-                              MediaQuery.of(context).size.height * 0.28,
-                          artworkWidth:
-                              MediaQuery.of(context).size.width * 0.65,
-                          artworkFit: BoxFit.cover,
-                          artworkQuality: FilterQuality.high,
-                          id: widget.songModelList[currentIndex].id,
-                          type: ArtworkType.AUDIO,
-                          keepOldArtwork: true,
-                          artworkBorder: BorderRadius.circular(200),
-                          nullArtworkWidget: const Icon(
-                            Icons.music_note,
-                            size: 80,
-                          ),
-                        ),
+                        Consumer<NowPlayingScreenProvider>(
+                            builder: (context, value, child) {
+                          return QueryArtworkWidget(
+                            artworkHeight:
+                                MediaQuery.of(context).size.height * 0.28,
+                            artworkWidth:
+                                MediaQuery.of(context).size.width * 0.65,
+                            artworkFit: BoxFit.cover,
+                            artworkQuality: FilterQuality.high,
+                            id: songModelList[value.currentIndex].id,
+                            type: ArtworkType.AUDIO,
+                            keepOldArtwork: true,
+                            artworkBorder: BorderRadius.circular(200),
+                            nullArtworkWidget: const Icon(
+                              Icons.music_note,
+                              size: 80,
+                            ),
+                          );
+                        }),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.013,
                         ),
@@ -126,7 +110,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                           padding: const EdgeInsets.only(left: 10, right: 12),
                           child: Text(
                             maxLines: 1,
-                            widget.songModelList[currentIndex].title,
+                            songModelList[providerWL.currentIndex].title,
                             overflow: TextOverflow.clip,
                             style: const TextStyle(
                                 fontFamily: 'UbuntuCondensed',
@@ -135,11 +119,11 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                           ),
                         ),
                         Text(
-                          widget.songModelList[currentIndex].artist
+                          songModelList[providerWL.currentIndex].artist
                                       .toString() ==
                                   "<unknown>"
                               ? "Unknown artist"
-                              : widget.songModelList[currentIndex].artist
+                              : songModelList[providerWL.currentIndex].artist
                                   .toString(),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -190,7 +174,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                             ),
                             FavButMusicPlaying(
                                 songFavoriteMusicPlaying:
-                                    widget.songModelList[currentIndex]),
+                                    songModelList[providerWOL.currentIndex]),
                             IconButton(
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -208,31 +192,33 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         Row(
                           children: [
                             Text(
-                              _position.toString().substring(2, 7),
+                              providerWL.position.toString().substring(2, 7),
                               style: const TextStyle(color: Colors.white),
                             ),
                             Expanded(
-                                child: Slider(
-                                    activeColor: Colors.cyan,
-                                    inactiveColor: Colors.white,
-                                    thumbColor:
-                                        const Color.fromARGB(255, 10, 139, 245),
-                                    min: const Duration(microseconds: 0).inSeconds.toDouble(),
-                                    value: _position.inSeconds.toDouble(),
-                                    max: _duration.inSeconds.toDouble(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        sliderFunction(value.toInt());
-                                        value = value;
-                                      });
-                                    })),
+                                child: Consumer<NowPlayingScreenProvider>(
+                              builder: (context, value, child) => Slider(
+                                  activeColor: Colors.cyan,
+                                  inactiveColor: Colors.white,
+                                  thumbColor:
+                                      const Color.fromARGB(255, 10, 139, 245),
+                                  min: const Duration(microseconds: 0)
+                                      .inSeconds
+                                      .toDouble(),
+                                  value: value.position.inSeconds.toDouble(),
+                                  max: value.duration.inSeconds.toDouble(),
+                                  onChanged: (seconds) {
+                                    value.sliderFunction(seconds);
+                                  }),
+                            )),
                             Text(
-                              _duration.toString().substring(2, 7),
+                              providerWL.duration.toString().substring(2, 7),
                               style: const TextStyle(color: Colors.white),
                             ),
                           ],
                         ),
-                        SizedBox( height: MediaQuery.of(context).size.height * 0.013),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.013),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -241,10 +227,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                               backgroundColor:
                                   const Color.fromARGB(255, 91, 174, 241),
                               child: IconButton(
-                                  onPressed: () {
-                                    if (GetSongs.player.hasPrevious) {
-                                      GetSongs.player.seekToPrevious();
-                                    }
+                                  onPressed: () async{
+                                   providerWOL.previousBtn();
                                   },
                                   icon: const Icon(
                                     Icons.skip_previous,
@@ -257,15 +241,9 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                               backgroundColor:
                                   const Color.fromARGB(255, 91, 174, 241),
                               child: IconButton(
-                                  onPressed: () async {
-                                    if (GetSongs.player.playing) {
-                                      await GetSongs.player.pause();
-                                      setState(() {});
-                                    } else {
-                                      await GetSongs.player.play();
-                                      setState(() {});
-                                    }
-                                  },
+                                 onPressed: () async{
+                                  providerWL.playBtnPressed();
+                                 },
                                   icon: Icon(
                                     GetSongs.player.playing
                                         ? Icons.pause_outlined
@@ -279,10 +257,8 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                               backgroundColor:
                                   const Color.fromARGB(255, 91, 174, 241),
                               child: IconButton(
-                                  onPressed: () {
-                                    if (GetSongs.player.hasNext) {
-                                      GetSongs.player.seekToNext();
-                                    }
+                                  onPressed: () async{
+                                  providerWOL.nextBtn();
                                   },
                                   icon: const Icon(
                                     Icons.skip_next,
@@ -302,23 +278,5 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
         ),
       ),
     );
-  }
-
-  void playSong() {
-    GetSongs.player.durationStream.listen((d) {
-      setState(() {
-        _duration = d!;
-      });
-    });
-    GetSongs.player.positionStream.listen((p) {
-      setState(() {
-        _position = p;
-      });
-    });
-  }
-
-  void sliderFunction(int seconds) {
-    Duration duration = Duration(seconds: seconds);
-    GetSongs.player.seek(duration);
   }
 }

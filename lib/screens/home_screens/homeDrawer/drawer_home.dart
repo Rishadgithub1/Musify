@@ -58,7 +58,8 @@ class HomeDrawer extends StatelessWidget {
                               content: const Text(
                                 'Are You Sure Want To Reset The App',
                                 style: TextStyle(
-                                    fontFamily: 'UbuntuCondensed', fontSize: 18),
+                                    fontFamily: 'UbuntuCondensed',
+                                    fontSize: 18),
                               ),
                               actions: [
                                 Row(
@@ -135,10 +136,6 @@ class DrawerTile extends StatelessWidget {
           title: Text(
             text1,
             style: const TextStyle(fontFamily: 'UbuntuCondensed', fontSize: 19),
-            // style: GoogleFonts.ubuntuCondensed(
-            //     textStyle: const TextStyle(
-            //   fontSize: 19,
-            // )),
           ),
           onTap: ontap1,
         ),

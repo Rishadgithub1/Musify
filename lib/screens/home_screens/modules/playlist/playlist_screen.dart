@@ -1,3 +1,4 @@
+// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:music_app/controller/songController.dart';
@@ -7,18 +8,13 @@ import 'package:music_app/screens/home_screens/modules/playlist/allsongslist_pla
 import 'package:music_app/screens/home_screens/nowplaying/now_playing.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class PlaylistData extends StatefulWidget {
-  const PlaylistData(
-      {Key? key, required this.playlist, required this.folderindex})
+class PlaylistData extends StatelessWidget {
+  PlaylistData({Key? key, required this.playlist, required this.folderindex})
       : super(key: key);
   final MusicModel playlist;
   final int folderindex;
-  @override
-  State<PlaylistData> createState() => _PlaylistDataState();
-}
-
-class _PlaylistDataState extends State<PlaylistData> {
   late List<SongModel> playlistsong;
+
   @override
   Widget build(BuildContext context) {
     PlayListDB().getAllPlaylist();
@@ -46,7 +42,7 @@ class _PlaylistDataState extends State<PlaylistData> {
             ),
           ),
           automaticallyImplyLeading: false,
-          title: Text(widget.playlist.name,
+          title: Text(playlist.name,
               style: const TextStyle(
                   fontFamily: 'UbuntuCondensed',
                   color: Colors.white,
@@ -62,8 +58,8 @@ class _PlaylistDataState extends State<PlaylistData> {
                     Hive.box<MusicModel>('playlistDB').listenable(),
                 builder: (BuildContext context, Box<MusicModel> value,
                     Widget? child) {
-                  playlistsong = listPlaylist(
-                      value.values.toList()[widget.folderindex].songId);
+                  playlistsong =
+                      listPlaylist(value.values.toList()[folderindex].songId);
                   return playlistsong.isEmpty
                       ? const Center(
                           child: Text(
@@ -110,31 +106,22 @@ class _PlaylistDataState extends State<PlaylistData> {
                                   child:
                                       Image.asset('assets/images/no song.png'),
                                 ),
-                                errorBuilder: (
-                                  context,
-                                  excepion,
-                                  gdb,
-                                ) {
-                                  setState(() {});
-                                  return Image.asset('');
-                                },
                               ),
                               title: Text(playlistsong[index].title,
                                   maxLines: 1,
                                   overflow: TextOverflow.clip,
-                                  style:const TextStyle(fontFamily: 'UbuntuCondensed',fontSize: 18)
-                                
-                                  ),
+                                  style: const TextStyle(
+                                      fontFamily: 'UbuntuCondensed',
+                                      fontSize: 18)),
                               subtitle: Text(
                                 playlistsong[index].artist!,
-                                style: const TextStyle(fontFamily: 'UbuntuCondensed'),
+                                style: const TextStyle(
+                                    fontFamily: 'UbuntuCondensed'),
                                 maxLines: 1,
                               ),
                               trailing: IconButton(
                                 onPressed: () {
-                                  widget.playlist.deleteData(
-                                    playlistsong[index].id,
-                                  );
+                                  playlist.deleteData(playlistsong[index].id);
                                 },
                                 icon: const Icon(
                                   Icons.delete,
@@ -158,7 +145,7 @@ class _PlaylistDataState extends State<PlaylistData> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (ctx) => SongListPage(
-                  playlist: widget.playlist,
+                  playlist: playlist,
                 ),
               ),
             );

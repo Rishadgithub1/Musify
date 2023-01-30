@@ -4,15 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:music_app/db/functions/favorite_db.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class FavTextButton extends StatefulWidget {
+class FavTextButton extends StatelessWidget {
   const FavTextButton({super.key, required this.songFavorite});
   final SongModel songFavorite;
 
-  @override
-  State<FavTextButton> createState() => _FavTextButtonState();
-}
-
-class _FavTextButtonState extends State<FavTextButton> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -20,8 +15,8 @@ class _FavTextButtonState extends State<FavTextButton> {
       builder: (BuildContext ctx, List<SongModel> favoriteData, Widget? child) {
         return TextButton(
           onPressed: () {
-            if (FavoriteDb.isFavor(widget.songFavorite)) {
-              FavoriteDb.delete(widget.songFavorite.id);
+            if (FavoriteDb.isFavor(songFavorite)) {
+              FavoriteDb.delete(songFavorite.id);
               const snackBar = SnackBar(
                 content: Text(
                   'Song Removed From Favorite',
@@ -32,7 +27,7 @@ class _FavTextButtonState extends State<FavTextButton> {
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             } else {
-              FavoriteDb.add(widget.songFavorite);
+              FavoriteDb.add(songFavorite);
               const snackbar = SnackBar(
                 backgroundColor: Colors.black,
                 content: Text(
@@ -47,7 +42,7 @@ class _FavTextButtonState extends State<FavTextButton> {
             FavoriteDb.favoriteSongs.notifyListeners();
             Navigator.of(context).pop();
           },
-          child: FavoriteDb.isFavor(widget.songFavorite)
+          child: FavoriteDb.isFavor(songFavorite)
               ? const Text(
                   'Remove from Favorites',
                   style: TextStyle(

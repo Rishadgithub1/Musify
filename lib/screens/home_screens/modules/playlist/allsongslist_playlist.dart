@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:music_app/db/functions/playlist_db.dart';
+import 'package:music_app/controller/provider/playlist/playlistallsongs_provider.dart';
 import 'package:music_app/db/model/music_model.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class SongListPage extends StatefulWidget {
-  const SongListPage({Key? key, required this.playlist}) : super(key: key);
+class SongListPage extends StatelessWidget {
+  SongListPage({Key? key, required this.playlist}) : super(key: key);
   final MusicModel playlist;
 
-  @override
-  State<SongListPage> createState() => _SongListPageState();
-}
-
-class _SongListPageState extends State<SongListPage> {
   final OnAudioQuery audioQuery = OnAudioQuery();
 
   @override
@@ -101,28 +96,27 @@ class _SongListPageState extends State<SongListPage> {
                             overflow: TextOverflow.visible,
                             maxLines: 1,
                           ),
-                          trailing:
-                              !widget.playlist.inValueIn(item.data![index].id)
-                                  ? IconButton(
-                                      onPressed: (() {
-                                        setState(() {
-                                          playlistCheck(item.data![index]);
-                                          PlayListDB()
-                                              .playlistnotifier
-                                              .notifyListeners();
-                                        });
-                                      }),
-                                      icon: const Icon(Icons.add),
-                                    )
-                                  : IconButton(
-                                      onPressed: (() {
-                                        setState(() {
-                                          widget.playlist
-                                              .deleteData(item.data![index].id);
-                                        });
-                                      }),
-                                      icon: const Icon(Icons.remove),
-                                    ),
+                          trailing: !playlist.inValueIn(item.data![index].id)
+                              ? IconButton(
+                                  onPressed: (() {
+                                    playlistCheck(ctx, item.data![index]);
+                                    Provider.of<PlaylistAllsongsProvider>(
+                                            context,
+                                            listen: false)
+                                        .notifyListeners();
+                                  }),
+                                  icon: const Icon(Icons.add),
+                                )
+                              : IconButton(
+                                  onPressed: (() {
+                                    playlist.deleteData(item.data![index].id);
+                                    Provider.of<PlaylistAllsongsProvider>(
+                                            context,
+                                            listen: false)
+                                        .notifyListeners();
+                                  }),
+                                  icon: const Icon(Icons.remove),
+                                ),
                         );
                       },
                       itemCount: item.data!.length);
@@ -131,9 +125,9 @@ class _SongListPageState extends State<SongListPage> {
     );
   }
 
-  void playlistCheck(SongModel data) {
-    if (!widget.playlist.inValueIn(data.id)) {
-      widget.playlist.add(data.id);
+  void playlistCheck(BuildContext ctx, SongModel data) {
+    if (!playlist.inValueIn(data.id)) {
+      playlist.add(data.id);
       const snackbar = SnackBar(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -143,7 +137,7 @@ class _SongListPageState extends State<SongListPage> {
         ),
         duration: Duration(milliseconds: 750),
       );
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(ctx).showSnackBar(snackbar);
     }
   }
 }

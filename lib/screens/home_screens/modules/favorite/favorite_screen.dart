@@ -26,14 +26,6 @@ class FavoriteScreen extends StatelessWidget {
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              leading: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  )),
               title: const Text(
                 'Favorite',
                 style: TextStyle(
@@ -55,13 +47,7 @@ class FavoriteScreen extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: 'UbuntuCondensed',
-                            fontSize: 16)
-                        //  GoogleFonts.ubuntuCondensed(
-                        //     textStyle: const TextStyle(
-                        //         // color: Colors.red,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 16))
-                        ),
+                            fontSize: 16)),
                   );
                 } else {
                   return ListView.separated(
@@ -85,9 +71,7 @@ class FavoriteScreen extends StatelessWidget {
                             style: const TextStyle(
                                 color: Colors.grey,
                                 fontFamily: 'UbuntuCondensed',
-                                overflow: TextOverflow.clip)
-                         
-                            ,
+                                overflow: TextOverflow.clip),
                             maxLines: 1,
                             favoriteData[index].artist.toString() == '<unknown>'
                                 ? 'UNKNOWN ARTIST'
@@ -119,6 +103,7 @@ class FavoriteScreen extends StatelessWidget {
                                   backgroundColor: Colors.black,
                                   content: Text(
                                     'Song deleted from your favorites',
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                   duration: Duration(
                                     seconds: 1,
@@ -133,8 +118,7 @@ class FavoriteScreen extends StatelessWidget {
                         );
                       }),
                       separatorBuilder: (context, index) => SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ),
+                          height: MediaQuery.of(context).size.height * 0.01),
                       itemCount: favoriteData.length);
                 }
               },
